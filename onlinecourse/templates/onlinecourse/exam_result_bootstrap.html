@@ -51,29 +51,27 @@
     <div class="card-columns-vertical mt-1">
     <h5 class="">Exam results</h5>
         <!--HINT Display exam results-->
-        {% for lesson in course.lesson_set.all %}
-            {% for question in lesson.question_set.all %}
-                <div class="card mt-1">
-                    <div class="card-header"><h5>{{ question.text}}</h5></div>
-                    {% csrf_token %}
-                    <div class="form-group">
-                    {% for choice in question.choice_set.all %}
-                        {% if choice.id in choice_ids and choice.is_correct %}
-                            <div class="container-fluid" style="color:green">Correct answer: {{ choice.text }}</div>
-                        {% endif %}
-                        {% if choice.id in choice_ids and not choice.is_correct %}
-                            <div class="container-fluid" style="color:red">Wrong answer: {{ choice.text }}</div>
-                        {% endif %}
-                        {% if choice.id not in choice_ids and choice.is_correct %}
-                            <div class="container-fluid" style="color:orange">Not selected: {{ choice.text }}</div>
-                        {% endif %}
-                        {% if choice.id not in choice_ids and not choice.is_correct %}
-                            <div class="container-fluid" style="color:black">{{ choice.text }}</div>
-                        {% endif %}
-                    {% endfor %}
-                    </div>
+        {% for question in course.question_set.all %}
+            <div class="card mt-1">
+                <div class="card-header"><h5>{{ question.text}}</h5></div>
+                {% csrf_token %}
+                <div class="form-group">
+                {% for choice in question.choice_set.all %}
+                    {% if choice.id in choice_ids and choice.is_correct %}
+                        <div class="container-fluid" style="color:green">Correct answer: {{ choice.text }}</div>
+                    {% endif %}
+                    {% if choice.id in choice_ids and not choice.is_correct %}
+                        <div class="container-fluid" style="color:red">Wrong answer: {{ choice.text }}</div>
+                    {% endif %}
+                    {% if choice.id not in choice_ids and choice.is_correct %}
+                        <div class="container-fluid" style="color:orange">Not selected: {{ choice.text }}</div>
+                    {% endif %}
+                    {% if choice.id not in choice_ids and not choice.is_correct %}
+                        <div class="container-fluid" style="color:black">{{ choice.text }}</div>
+                    {% endif %}
+                {% endfor %}
                 </div>
-            {% endfor %}
+            </div>
         {% endfor %}
 
     </div>

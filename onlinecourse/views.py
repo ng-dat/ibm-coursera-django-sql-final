@@ -150,11 +150,13 @@ def show_exam_result(request, course_id, submission_id):
     submission = get_object_or_404(Submission, pk=submission_id)
     choice_ids = [c.id for c in submission.choices.all()]
     
-    questions = Question.objects.filter(lesson__course=course).all()
-    corrects = len([q for q in questions if q.is_get_score(
-        [c.id for c in submission.choices.filter(question = q).all()]
-    )])
-    grade = int(corrects/len(questions)*100)
+    questions = course.question_set.all()
+    correct = sum([q.grade for q in questions if q.is_get_score(choice_ids)])
+    total = sum([q.grade for q in questions])
+    if not total:
+        grade = 0
+    else:
+        grade = int(correct/total*100)
     
     context = {}
     context['grade'] = grade
